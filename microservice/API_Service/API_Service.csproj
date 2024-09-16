@@ -88,6 +88,7 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Data\SampleData.cs" />
     <Compile Include="DTO\UserCredential.cs" />
+    <Compile Include="DTO\UserTask.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
