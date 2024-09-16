@@ -131,3 +131,14 @@ F:\Project\sample_project\TaskManagement\microservice\API_Service\obj\Debug\API_
 F:\Project\sample_project\TaskManagement\microservice\API_Service\obj\Debug\API_Service.csproj.CopyComplete
 F:\Project\sample_project\TaskManagement\microservice\API_Service\obj\Debug\API_Service.dll
 F:\Project\sample_project\TaskManagement\microservice\API_Service\obj\Debug\API_Service.pdb
+F:\Project\sample_project\TaskManagement\microservice\API_Service\bin\log4net.dll
+F:\Project\sample_project\TaskManagement\microservice\API_Service\bin\System.Runtime.CompilerServices.Unsafe.dll
+F:\Project\sample_project\TaskManagement\microservice\API_Service\bin\Unity.Abstractions.dll
+F:\Project\sample_project\TaskManagement\microservice\API_Service\bin\Unity.Container.dll
+F:\Project\sample_project\TaskManagement\microservice\API_Service\bin\Unity.WebApi.dll
+F:\Project\sample_project\TaskManagement\microservice\API_Service\bin\System.Threading.Tasks.Extensions.dll
+F:\Project\sample_project\TaskManagement\microservice\API_Service\bin\log4net.pdb
+F:\Project\sample_project\TaskManagement\microservice\API_Service\bin\log4net.xml
+F:\Project\sample_project\TaskManagement\microservice\API_Service\bin\System.Runtime.CompilerServices.Unsafe.xml
+F:\Project\sample_project\TaskManagement\microservice\API_Service\bin\Unity.Abstractions.pdb
+F:\Project\sample_project\TaskManagement\microservice\API_Service\bin\Unity.Container.pdb
