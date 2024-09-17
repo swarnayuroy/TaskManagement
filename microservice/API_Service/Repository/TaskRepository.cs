@@ -16,10 +16,10 @@ namespace API_Service.Repository
         private static IList<Models.TaskComment> _taskComments;
         public TaskRepository()
         {
-            _users = SampleData.users;
-            _tasks = SampleData.tasks;
-            _taskDetails = SampleData.taskDetails;
-            _taskComments = SampleData.taskComments;
+            _users = SampleData.GetAllUser();
+            _tasks = SampleData.GetAllTask();
+            _taskDetails = SampleData.GetAllTaskDetail();
+            _taskComments = SampleData.GetAllComment();
         }
         public async Task<DTO.UserTask> GetUserTask(Guid userId)
         {

@@ -15,8 +15,8 @@ namespace API_Service.Repository
         private static IList<UserLog> _userLogs;
         public UserRepository()
         {
-            _users = SampleData.users;
-            _userLogs = SampleData.userLogs;
+            _users = SampleData.GetAllUser();
+            _userLogs = SampleData.GetUserLogs();
         }
         public async Task<User> GetUser(Guid id)
         {
