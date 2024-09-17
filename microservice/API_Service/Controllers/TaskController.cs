@@ -54,7 +54,7 @@ namespace API_Service.Controllers
 
         [HttpPost]
         [Route("api/task/create")]
-        public async Task<HttpResponseMessage> CreateTask(Guid userId, Models.Task task)
+        public async Task<HttpResponseMessage> CreateTask(Guid userId, [FromBody] Models.Task task)
         {
             try
             {
@@ -71,7 +71,7 @@ namespace API_Service.Controllers
 
         [HttpPut]
         [Route("api/task/edit")]
-        public async Task<HttpResponseMessage> EditTask(Guid taskId, Models.Task task)
+        public async Task<HttpResponseMessage> EditTask(Guid taskId, [FromBody] Models.Task task)
         {
             try
             {
@@ -121,7 +121,7 @@ namespace API_Service.Controllers
 
         [HttpPut]
         [Route("api/task/comment/edit")]
-        public async Task<HttpResponseMessage> EditComment(Guid commentId, Guid userId, Guid taskId, Models.TaskComment comment)
+        public async Task<HttpResponseMessage> EditComment(Guid commentId, Guid userId, Guid taskId, [FromBody] TaskComment comment)
         {
             try
             {
