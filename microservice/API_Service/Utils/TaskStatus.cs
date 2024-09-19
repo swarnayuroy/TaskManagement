@@ -9,7 +9,9 @@ namespace API_Service.Utils
     {
         Discarded,
         Created,
+        ToDo,
         InProgress,
-        Completed
+        Completed,
+        OnHold
     }
 }
