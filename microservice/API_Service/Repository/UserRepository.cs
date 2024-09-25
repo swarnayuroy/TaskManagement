@@ -13,16 +13,17 @@ namespace API_Service.Repository
     {
         private static IList<User> _users;
         private static IList<UserLog> _userLogs;
-        public UserRepository()
+        private readonly IContext _context;
+        public UserRepository(IContext context)
         {
-            _users = SampleData.GetAllUser();
-            _userLogs = SampleData.GetUserLogs();
+            _context = context;
         }
         public async Task<User> GetUser(Guid id)
         {
             User user;
             try
             {
+                _users = await _context.GetAllUser();
                 user = await System.Threading.Tasks.Task.Run(() =>
                 {
                     return _users.Where(usr => usr.Id == id).SingleOrDefault<User>();
@@ -35,10 +36,12 @@ namespace API_Service.Repository
             return user;
         }
         public async Task<bool> AddUser(User user)
-        {
+        {            
             bool response = false;
             try
             {
+                _users = await _context.GetAllUser();
+                _userLogs = await _context.GetUserLogs();
                 response = await System.Threading.Tasks.Task.Run(() =>
                 {
                     user.Id = Guid.NewGuid();
@@ -59,8 +62,8 @@ namespace API_Service.Repository
             {
                 if (response)
                 {
-                    await SampleData.SaveUsersAsync(_users);
-                    await SampleData.SaveUserLogsAsync(_userLogs);
+                    await _context.SaveUsersAsync(_users);
+                    await _context.SaveUserLogsAsync(_userLogs);
                 }
             }
             return response;
@@ -70,14 +73,16 @@ namespace API_Service.Repository
             bool response = false;
             try
             {
+                _users = await _context.GetAllUser();
                 response = await System.Threading.Tasks.Task.Run(() =>
                 {
                     var user = _users.Where(usr => usr.Id == userId).SingleOrDefault<User>();
                     if (user != null)
                     {
                         _users[_users.IndexOf(user)].Password = password;
+                        return true;
                     }
-                    return true;
+                    return false;
                 });
             }
             catch (Exception)
@@ -88,7 +93,7 @@ namespace API_Service.Repository
             {
                 if (response)
                 {
-                    await SampleData.SaveUsersAsync(_users);
+                    await _context.SaveUsersAsync(_users);
                 }
             }
             return response;
@@ -98,6 +103,8 @@ namespace API_Service.Repository
             bool response = false;
             try
             {
+                _users = await _context.GetAllUser();
+                _userLogs = await _context.GetUserLogs();
                 response = await System.Threading.Tasks.Task.Run(() =>
                 {
                     var user = _users.Where(usr => usr.Email == email && usr.Password == password).SingleOrDefault<User>();
@@ -117,7 +124,7 @@ namespace API_Service.Repository
             {
                 if (response)
                 {
-                    await SampleData.SaveUserLogsAsync(_userLogs);
+                    await _context.SaveUserLogsAsync(_userLogs);
                 }
             }
             return response;

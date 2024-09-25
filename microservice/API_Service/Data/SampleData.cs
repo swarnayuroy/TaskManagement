@@ -6,7 +6,7 @@ using API_Service.Models;
 
 namespace API_Service.Data
 {
-    public class SampleData
+    public class SampleData: IContext
     {
         private static IList<User> _users = new List<User>() {
             new User
@@ -54,45 +54,51 @@ namespace API_Service.Data
         private static IList<Task> _tasks = new List<Task>();
         private static IList<UserTaskDetail> _taskDetails = new List<UserTaskDetail>();
         private static IList<TaskComment> _taskComments = new List<TaskComment>();
-        public static IList<User> GetAllUser()
+
+        #region GetContext
+        public async System.Threading.Tasks.Task<IList<User>> GetAllUser()
         {            
-            return _users;
+            return await System.Threading.Tasks.Task.Run(() => _users);
         }
-        public static IList<UserLog> GetUserLogs()
+        public async System.Threading.Tasks.Task<IList<UserLog>> GetUserLogs()
         {
-            return _userLogs;
+            return await System.Threading.Tasks.Task.Run(() => _userLogs);
         }
-        public static IList<Task> GetAllTask()
+        public async System.Threading.Tasks.Task<IList<Task>> GetAllTask()
         {
-            return _tasks;
+            return await System.Threading.Tasks.Task.Run(() => _tasks);
         }
-        public static IList<UserTaskDetail> GetAllTaskDetail()
+        public async System.Threading.Tasks.Task<IList<UserTaskDetail>> GetAllTaskDetail()
         {
-            return _taskDetails;
+            return await System.Threading.Tasks.Task.Run(() => _taskDetails);
         }
-        public static IList<TaskComment> GetAllComment()
+        public async System.Threading.Tasks.Task<IList<TaskComment>> GetAllComment()
         {
-            return _taskComments;
+            return await System.Threading.Tasks.Task.Run(() => _taskComments);
         }
-        public static async System.Threading.Tasks.Task SaveUsersAsync(IList<User> usersData)
+        #endregion
+
+        #region SaveContext
+        public async System.Threading.Tasks.Task SaveUsersAsync(IList<User> usersData)
         {
             await System.Threading.Tasks.Task.Run(() => _users = usersData);
         }
-        public static async System.Threading.Tasks.Task SaveUserLogsAsync(IList<UserLog> userLogsData)
+        public async System.Threading.Tasks.Task SaveUserLogsAsync(IList<UserLog> userLogsData)
         {
             await System.Threading.Tasks.Task.Run(() => _userLogs = userLogsData);
         }
-        public static async System.Threading.Tasks.Task SaveTasksAsync(IList<Task> tasksData)
+        public async System.Threading.Tasks.Task SaveTasksAsync(IList<Task> tasksData)
         {
             await System.Threading.Tasks.Task.Run(() => _tasks = tasksData);
         }
-        public static async System.Threading.Tasks.Task SaveTaskDetailsAsync(IList<UserTaskDetail> taskDetailsData)
+        public async System.Threading.Tasks.Task SaveTaskDetailsAsync(IList<UserTaskDetail> taskDetailsData)
         {
             await System.Threading.Tasks.Task.Run(() => _taskDetails = taskDetailsData);
         }
-        public static async System.Threading.Tasks.Task SaveTaskCommentsAsync(IList<TaskComment> commentsData)
+        public async System.Threading.Tasks.Task SaveTaskCommentsAsync(IList<TaskComment> commentsData)
         {
             await System.Threading.Tasks.Task.Run(() => _taskComments = commentsData);
         }
+        #endregion
     }
 }

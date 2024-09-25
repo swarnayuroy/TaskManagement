@@ -14,18 +14,21 @@ namespace API_Service.Repository
         private static IList<Models.Task> _tasks;
         private static IList<Models.UserTaskDetail> _taskDetails;
         private static IList<Models.TaskComment> _taskComments;
-        public TaskRepository()
+        private readonly IContext _context;
+        public TaskRepository(IContext context)
         {
-            _users = SampleData.GetAllUser();
-            _tasks = SampleData.GetAllTask();
-            _taskDetails = SampleData.GetAllTaskDetail();
-            _taskComments = SampleData.GetAllComment();
+            _context = context;
         }
         public async Task<DTO.UserTask> GetUserTask(Guid userId)
         {
             DTO.UserTask userTask = null;
             try
             {
+                _users = await _context.GetAllUser();
+                _tasks = await _context.GetAllTask();
+                _taskDetails = await _context.GetAllTaskDetail();
+                _taskComments = await _context.GetAllComment();
+
                 userTask = await Task.Run(() => {
                     List<Models.Task> tasks = null;
                     List<Models.TaskComment> taskComments = null;
@@ -62,6 +65,7 @@ namespace API_Service.Repository
             Models.Task task = null;
             try
             {
+                _tasks = await _context.GetAllTask();
                 task = await System.Threading.Tasks.Task.Run(() =>
                 {
                     return _tasks.Where(t => t.Id == taskId)
@@ -79,6 +83,8 @@ namespace API_Service.Repository
             bool response = false;
             try
             {
+                _tasks = await _context.GetAllTask();
+                _taskDetails = await _context.GetAllTaskDetail();
                 response = await System.Threading.Tasks.Task.Run(() =>
                 {
                     task.Id = Guid.NewGuid();
@@ -102,8 +108,8 @@ namespace API_Service.Repository
             {
                 if (response)
                 {
-                    await SampleData.SaveTasksAsync(_tasks);
-                    await SampleData.SaveTaskDetailsAsync(_taskDetails);
+                    await _context.SaveTasksAsync(_tasks);
+                    await _context.SaveTaskDetailsAsync(_taskDetails);
                 }
             }
             return response;
@@ -113,6 +119,7 @@ namespace API_Service.Repository
             bool response = false;
             try
             {
+                _tasks = await _context.GetAllTask();
                 response = await System.Threading.Tasks.Task.Run(() =>
                 {
                     var usrTask = _tasks.Where(t => t.Id == taskId)
@@ -133,7 +140,7 @@ namespace API_Service.Repository
             {
                 if (response)
                 {
-                    await SampleData.SaveTasksAsync(_tasks);
+                    await _context.SaveTasksAsync(_tasks);
                 }
             }
             return response;
@@ -143,6 +150,10 @@ namespace API_Service.Repository
             bool response = false;
             try
             {
+                _tasks = await _context.GetAllTask();
+                _taskDetails = await _context.GetAllTaskDetail();
+                _taskComments = await _context.GetAllComment();
+
                 response = await System.Threading.Tasks.Task.Run(() =>
                 {
 
@@ -177,9 +188,9 @@ namespace API_Service.Repository
             {
                 if (response)
                 {
-                    await SampleData.SaveTaskCommentsAsync(_taskComments);
-                    await SampleData.SaveTasksAsync(_tasks);
-                    await SampleData.SaveTaskDetailsAsync(_taskDetails);
+                    await _context.SaveTaskCommentsAsync(_taskComments);
+                    await _context.SaveTasksAsync(_tasks);
+                    await _context.SaveTaskDetailsAsync(_taskDetails);
                 }
             }
             return response;
@@ -189,6 +200,9 @@ namespace API_Service.Repository
             bool response = false;
             try
             {
+                _users = await _context.GetAllUser();
+                _taskComments = await _context.GetAllComment();
+
                 response = await System.Threading.Tasks.Task.Run(() =>
                 {
                     comment.Id = Guid.NewGuid();
@@ -208,7 +222,7 @@ namespace API_Service.Repository
             {
                 if (response)
                 {
-                    await SampleData.SaveTaskCommentsAsync(_taskComments);
+                    await _context.SaveTaskCommentsAsync(_taskComments);
                 }
             }
             return response;
@@ -218,6 +232,8 @@ namespace API_Service.Repository
             bool response = false;
             try
             {
+                _taskComments = await _context.GetAllComment();
+
                 response = await System.Threading.Tasks.Task.Run(() =>
                 {
                     var userComment = _taskComments.Where(c => c.Id == commentId && c.UserId == userId && c.TaskId == taskId)
@@ -239,7 +255,7 @@ namespace API_Service.Repository
             {
                 if (response)
                 {
-                    await SampleData.SaveTaskCommentsAsync(_taskComments);
+                    await _context.SaveTaskCommentsAsync(_taskComments);
                 }
             }
             return response;
@@ -249,6 +265,8 @@ namespace API_Service.Repository
             bool response = false;
             try
             {
+                _taskComments = await _context.GetAllComment();
+
                 response = await System.Threading.Tasks.Task.Run(() =>
                 {
                     var userComment = _taskComments.Where(c => c.Id == commentId && c.UserId == userId && c.TaskId == taskId)
@@ -269,7 +287,7 @@ namespace API_Service.Repository
             {
                 if (response)
                 {
-                    await SampleData.SaveTaskCommentsAsync(_taskComments);
+                    await _context.SaveTaskCommentsAsync(_taskComments);
                 }
             }
             return response;

@@ -3,6 +3,7 @@ using Unity;
 using Unity.WebApi;
 using API_Service.Repository;
 using API_Service.Repository.Interface;
+using API_Service.Data;
 
 namespace API_Service
 {
@@ -17,6 +18,7 @@ namespace API_Service
 
             container.RegisterType<ITaskRepository, TaskRepository>();
             container.RegisterType<IUserRepository, UserRepository>();
+            container.RegisterType<IContext, SampleData>();
             GlobalConfiguration.Configuration.DependencyResolver = new UnityDependencyResolver(container);
         }
     }

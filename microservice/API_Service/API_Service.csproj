@@ -105,6 +105,7 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\TaskController.cs" />
     <Compile Include="Controllers\UserController.cs" />
+    <Compile Include="Data\IContext.cs" />
     <Compile Include="Data\SampleData.cs" />
     <Compile Include="DTO\UserCredential.cs" />
     <Compile Include="DTO\UserTask.cs" />
