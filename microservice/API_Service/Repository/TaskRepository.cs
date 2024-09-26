@@ -19,6 +19,7 @@ namespace API_Service.Repository
         {
             _context = context;
         }
+
         public async Task<DTO.UserTask> GetUserTask(Guid userId)
         {
             DTO.UserTask userTask = null;
@@ -32,25 +33,29 @@ namespace API_Service.Repository
                 userTask = await Task.Run(() => {
                     List<Models.Task> tasks = null;
                     List<Models.TaskComment> taskComments = null;
-                    var user = _users.Where(usr => usr.Id == userId).SingleOrDefault<Models.User>();
-                    var taskIds = _taskDetails.Where(t => t.UserId == userId).Select(id => id.TaskId).ToList();
-                    if (user != null)
+
+                    if (_users != null && _taskDetails != null)
                     {
-                        if (taskIds.Count >= 1)
+                        var user = _users.Where(usr => usr.Id == userId).SingleOrDefault<Models.User>();
+                        var taskIds = _taskDetails.Where(t => t.UserId == userId).Select(id => id.TaskId).ToList();
+                        if (user != null)
                         {
-                            foreach (var taskId in taskIds)
+                            if (taskIds.Count >= 1)
                             {
-                                var task = _tasks.Where(t => t.Id == taskId).SingleOrDefault<Models.Task>();
-                                var comment = _taskComments.Where(c => c.TaskId == taskId).SingleOrDefault<Models.TaskComment>();
-                                tasks.Add(task);
-                                if (comment != null)
+                                foreach (var taskId in taskIds)
                                 {
-                                    taskComments.Add(comment);
+                                    var task = _tasks.Where(t => t.Id == taskId).SingleOrDefault<Models.Task>();
+                                    var comment = _taskComments.Where(c => c.TaskId == taskId).SingleOrDefault<Models.TaskComment>();
+                                    tasks.Add(task);
+                                    if (comment != null)
+                                    {
+                                        taskComments.Add(comment);
+                                    }
                                 }
                             }
+                            return new DTO.UserTask() { User = user, Tasks = tasks, Comments = taskComments };
                         }
-                        return new DTO.UserTask() { User = user, Tasks = tasks, Comments = taskComments };
-                    }
+                    }                    
                     return null;
                 });
             }
@@ -66,11 +71,15 @@ namespace API_Service.Repository
             try
             {
                 _tasks = await _context.GetAllTask();
-                task = await System.Threading.Tasks.Task.Run(() =>
+
+                if (_tasks != null)
                 {
-                    return _tasks.Where(t => t.Id == taskId)
-                                 .SingleOrDefault<Models.Task>();
-                });
+                    task = await System.Threading.Tasks.Task.Run(() =>
+                    {
+                        return _tasks.Where(t => t.Id == taskId)
+                                     .SingleOrDefault<Models.Task>();
+                    });
+                }                
             }
             catch (Exception)
             {
@@ -120,17 +129,21 @@ namespace API_Service.Repository
             try
             {
                 _tasks = await _context.GetAllTask();
-                response = await System.Threading.Tasks.Task.Run(() =>
+
+                if (_tasks != null)
                 {
-                    var usrTask = _tasks.Where(t => t.Id == taskId)
-                                        .SingleOrDefault<Models.Task>();
-                    if (usrTask != null)
+                    response = await System.Threading.Tasks.Task.Run(() =>
                     {
-                        _tasks[_tasks.IndexOf(usrTask)] = task;
-                        return true;
-                    }
-                    return false;
-                });
+                        var usrTask = _tasks.Where(t => t.Id == taskId)
+                                            .SingleOrDefault<Models.Task>();
+                        if (usrTask != null)
+                        {
+                            _tasks[_tasks.IndexOf(usrTask)] = task;
+                            return true;
+                        }
+                        return false;
+                    });
+                }                
             }
             catch (Exception)
             {
@@ -156,27 +169,32 @@ namespace API_Service.Repository
 
                 response = await System.Threading.Tasks.Task.Run(() =>
                 {
-
-                    var taskDetail = _taskDetails.Where(task => task.UserId == userId && task.TaskId == taskId)
+                    if (_taskDetails != null)
+                    {
+                        var taskDetail = _taskDetails.Where(task => task.UserId == userId && task.TaskId == taskId)
                                                  .SingleOrDefault<Models.UserTaskDetail>();
 
-                    if (taskDetail != null)
-                    {
-                        var usrTask = _tasks.Where(task => task.Id == taskId)
-                                            .SingleOrDefault<Models.Task>();
-                        var taskComments = _taskComments.Where(comment => comment.TaskId == taskId)
-                                                        .ToList<Models.TaskComment>();
-                        if (taskComments.Count >= 1)
+                        if (taskDetail != null)
                         {
-                            foreach (var comment in taskComments)
+                            var usrTask = _tasks.Where(task => task.Id == taskId)
+                                                .SingleOrDefault<Models.Task>();
+                            var taskComments = _taskComments.Where(comment => comment.TaskId == taskId)
+                                                            .ToList<Models.TaskComment>();
+                            if (taskComments.Count >= 1)
                             {
-                                _taskComments.Remove(comment);
+                                foreach (var comment in taskComments)
+                                {
+                                    _taskComments.Remove(comment);
+                                }
                             }
+                            if (usrTask != null)
+                            {
+                                _taskDetails.Remove(taskDetail);
+                                _tasks.Remove(usrTask);
+                                return true;
+                            }                            
                         }
-                        _taskDetails.Remove(taskDetail);
-                        _tasks.Remove(usrTask);
-                        return true;
-                    }
+                    }                    
                     return false;
                 });
             }
@@ -200,19 +218,26 @@ namespace API_Service.Repository
             bool response = false;
             try
             {
+                string usrName = "";
+
                 _users = await _context.GetAllUser();
                 _taskComments = await _context.GetAllComment();
-
-                response = await System.Threading.Tasks.Task.Run(() =>
+                
+                if (_users != null)
                 {
-                    comment.Id = Guid.NewGuid();
-                    comment.TaskId = taskId;
-                    comment.UserId = userId;
-                    comment.UserName = _users.Where(usr => usr.Id == userId).Select(usr => usr.FirstName).ToString() + " " + _users.Where(usr => usr.Id == userId).Select(usr => usr.LastName).ToString();
-                    comment.CommentedAt = System.DateTime.Now;
-                    _taskComments.Add(comment);
-                    return true;
-                });
+                    usrName = _users.Where(usr => usr.Id == userId).Select(usr => usr.FirstName).ToString() + " " + _users.Where(usr => usr.Id == userId).Select(usr => usr.LastName).ToString();
+
+                    response = await System.Threading.Tasks.Task.Run(() =>
+                    {
+                        comment.Id = Guid.NewGuid();
+                        comment.TaskId = taskId;
+                        comment.UserId = userId;
+                        comment.UserName = usrName;
+                        comment.CommentedAt = System.DateTime.Now;
+                        _taskComments.Add(comment);
+                        return true;
+                    });
+                }                
             }
             catch (Exception)
             {
@@ -234,18 +259,21 @@ namespace API_Service.Repository
             {
                 _taskComments = await _context.GetAllComment();
 
-                response = await System.Threading.Tasks.Task.Run(() =>
+                if (_taskComments != null)
                 {
-                    var userComment = _taskComments.Where(c => c.Id == commentId && c.UserId == userId && c.TaskId == taskId)
-                                                   .SingleOrDefault<Models.TaskComment>();
-                    if (userComment != null)
+                    response = await System.Threading.Tasks.Task.Run(() =>
                     {
-                        comment.EditedAt = System.DateTime.Now;
-                        _taskComments[_taskComments.IndexOf(userComment)] = comment;
-                        return true;
-                    }
-                    return false;
-                });
+                        var userComment = _taskComments.Where(c => c.Id == commentId && c.UserId == userId && c.TaskId == taskId)
+                                                       .SingleOrDefault<Models.TaskComment>();
+                        if (userComment != null)
+                        {
+                            comment.EditedAt = System.DateTime.Now;
+                            _taskComments[_taskComments.IndexOf(userComment)] = comment;
+                            return true;
+                        }
+                        return false;
+                    });
+                }                
             }
             catch (Exception)
             {
@@ -267,17 +295,20 @@ namespace API_Service.Repository
             {
                 _taskComments = await _context.GetAllComment();
 
-                response = await System.Threading.Tasks.Task.Run(() =>
+                if (_taskComments != null)
                 {
-                    var userComment = _taskComments.Where(c => c.Id == commentId && c.UserId == userId && c.TaskId == taskId)
-                                                   .SingleOrDefault<Models.TaskComment>();
-                    if (userComment != null)
+                    response = await System.Threading.Tasks.Task.Run(() =>
                     {
-                        _taskComments.Remove(userComment);
-                        return true;
-                    }
-                    return false;
-                });
+                        var userComment = _taskComments.Where(c => c.Id == commentId && c.UserId == userId && c.TaskId == taskId)
+                                                       .SingleOrDefault<Models.TaskComment>();
+                        if (userComment != null)
+                        {
+                            _taskComments.Remove(userComment);
+                            return true;
+                        }
+                        return false;
+                    });
+                }                
             }
             catch (Exception)
             {

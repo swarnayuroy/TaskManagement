@@ -18,16 +18,20 @@ namespace API_Service.Repository
         {
             _context = context;
         }
+
         public async Task<User> GetUser(Guid id)
         {
-            User user;
+            User user = null;
             try
             {
                 _users = await _context.GetAllUser();
-                user = await System.Threading.Tasks.Task.Run(() =>
+                if(_users != null)
                 {
-                    return _users.Where(usr => usr.Id == id).SingleOrDefault<User>();
-                });
+                    user = await System.Threading.Tasks.Task.Run(() =>
+                    {
+                        return _users.Where(usr => usr.Id == id).SingleOrDefault<User>();
+                    });
+                }                
             }
             catch (Exception)
             {
@@ -74,16 +78,19 @@ namespace API_Service.Repository
             try
             {
                 _users = await _context.GetAllUser();
-                response = await System.Threading.Tasks.Task.Run(() =>
+                if (_users != null)
                 {
-                    var user = _users.Where(usr => usr.Id == userId).SingleOrDefault<User>();
-                    if (user != null)
+                    response = await System.Threading.Tasks.Task.Run(() =>
                     {
-                        _users[_users.IndexOf(user)].Password = password;
-                        return true;
-                    }
-                    return false;
-                });
+                        var user = _users.Where(usr => usr.Id == userId).SingleOrDefault<User>();
+                        if (user != null)
+                        {
+                            _users[_users.IndexOf(user)].Password = password;
+                            return true;
+                        }
+                        return false;
+                    });
+                }                
             }
             catch (Exception)
             {
@@ -105,16 +112,20 @@ namespace API_Service.Repository
             {
                 _users = await _context.GetAllUser();
                 _userLogs = await _context.GetUserLogs();
-                response = await System.Threading.Tasks.Task.Run(() =>
+
+                if (_users != null)
                 {
-                    var user = _users.Where(usr => usr.Email == email && usr.Password == password).SingleOrDefault<User>();
-                    if (user != null)
+                    response = await System.Threading.Tasks.Task.Run(() =>
                     {
-                        _userLogs.Where(log => log.UserId == user.Id).SingleOrDefault<UserLog>().LoggedInAt = System.DateTime.Now;
-                        return true;
-                    }
-                    return false;
-                });
+                        var user = _users.Where(usr => usr.Email == email && usr.Password == password).SingleOrDefault<User>();
+                        if (user != null && _userLogs != null)
+                        {
+                            _userLogs.Where(log => log.UserId == user.Id).SingleOrDefault<UserLog>().LoggedInAt = System.DateTime.Now;
+                            return true;
+                        }
+                        return false;
+                    });
+                }                
             }
             catch (Exception)
             {
