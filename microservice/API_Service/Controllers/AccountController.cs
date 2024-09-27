@@ -5,7 +5,9 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using API_Service.Models;
+using API_Service.Models.ViewModel;
 using API_Service.DTO;
+using API_Service.Utils.Mapper;
 using API_Service.Repository.Interface;
 using System.Threading.Tasks;
 using log4net;
@@ -24,10 +26,11 @@ namespace API_Service.Controllers
         
         [HttpGet]
         [Route("api/checkcredential")]
-        public async Task<HttpResponseMessage> CheckCredentialIsValid([FromBody] UserCredential credential)
+        public async Task<HttpResponseMessage> CheckCredentialIsValid([FromBody] UserCredentialDTO userCredential)
         {
             try
             {
+                UserCredential credential = MapModel<UserCredentialDTO, UserCredential>.Map(userCredential);
                 bool response = await _repository.CheckValidUser(credential.Email, credential.Password);
                 return response ? Request.CreateResponse(HttpStatusCode.OK) : Request.CreateResponse(HttpStatusCode.NotFound);
             }

@@ -6,7 +6,7 @@ using API_Service.Models;
 
 namespace API_Service.DTO
 {
-    public class UserTask
+    public class UserTaskDTO
     {
         public User User { get; set; }
         public IList<Task> Tasks { get; set; }

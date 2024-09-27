@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Threading.Tasks;
+using API_Service.Models.ViewModel;
 using API_Service.Data;
 using API_Service.Repository.Interface;
 
@@ -20,9 +21,9 @@ namespace API_Service.Repository
             _context = context;
         }
 
-        public async Task<DTO.UserTask> GetUserTask(Guid userId)
+        public async Task<UserTask> GetUserTask(Guid userId)
         {
-            DTO.UserTask userTask = null;
+            UserTask userTask = null;
             try
             {
                 _users = await _context.GetAllUser();
@@ -53,7 +54,7 @@ namespace API_Service.Repository
                                     }
                                 }
                             }
-                            return new DTO.UserTask() { User = user, Tasks = tasks, Comments = taskComments };
+                            return new UserTask() { User = user, Tasks = tasks, Comments = taskComments };
                         }
                     }                    
                     return null;

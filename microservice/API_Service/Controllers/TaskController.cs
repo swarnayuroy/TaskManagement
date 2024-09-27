@@ -4,7 +4,10 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using API_Service.DTO;
 using API_Service.Models;
+using API_Service.Models.ViewModel;
+using API_Service.Utils.Mapper;
 using API_Service.Repository.Interface;
 using System.Threading.Tasks;
 using log4net;
@@ -25,8 +28,8 @@ namespace API_Service.Controllers
         public async Task<HttpResponseMessage> GetUserTask(Guid userId)
         {
             try
-            {
-                DTO.UserTask userTask = await _repository.GetUserTask(userId);
+            {                
+                UserTaskDTO userTask = MapModel<UserTask, UserTaskDTO>.Map(await _repository.GetUserTask(userId));
                 return userTask != null ? Request.CreateResponse(HttpStatusCode.OK, userTask) : Request.CreateResponse(HttpStatusCode.NoContent);
             }
             catch (Exception ex)
