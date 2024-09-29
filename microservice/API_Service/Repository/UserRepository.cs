@@ -66,8 +66,10 @@ namespace API_Service.Repository
             {
                 if (response)
                 {
-                    await _context.SaveUsersAsync(_users);
-                    await _context.SaveUserLogsAsync(_userLogs);
+                    await System.Threading.Tasks.Task.WhenAll(
+                        _context.SaveUsersAsync(_users),
+                        _context.SaveUserLogsAsync(_userLogs)
+                    );
                 }
             }
             return response;

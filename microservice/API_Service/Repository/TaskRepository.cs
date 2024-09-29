@@ -118,8 +118,10 @@ namespace API_Service.Repository
             {
                 if (response)
                 {
-                    await _context.SaveTasksAsync(_tasks);
-                    await _context.SaveTaskDetailsAsync(_taskDetails);
+                    await Task.WhenAll(
+                        _context.SaveTasksAsync(_tasks),
+                        _context.SaveTaskDetailsAsync(_taskDetails)
+                    );
                 }
             }
             return response;
@@ -207,9 +209,11 @@ namespace API_Service.Repository
             {
                 if (response)
                 {
-                    await _context.SaveTaskCommentsAsync(_taskComments);
-                    await _context.SaveTasksAsync(_tasks);
-                    await _context.SaveTaskDetailsAsync(_taskDetails);
+                    await Task.WhenAll(
+                        _context.SaveTaskCommentsAsync(_taskComments),
+                        _context.SaveTasksAsync(_tasks),
+                        _context.SaveTaskDetailsAsync(_taskDetails)
+                    );
                 }
             }
             return response;
