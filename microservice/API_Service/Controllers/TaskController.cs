@@ -18,10 +18,12 @@ namespace API_Service.Controllers
     {
         private readonly ILog _logger;
         private readonly ITaskRepository _repository;
-        public TaskController(ITaskRepository repository)
+        private readonly IMapperService _mapper;
+        public TaskController(ITaskRepository repository, IMapperService mapper)
         {
             this._logger = LogManager.GetLogger(typeof(TaskController));
             this._repository = repository;
+            this._mapper = mapper;
         }
         [HttpGet]
         [Route("api/getusertask/{userId}")]
@@ -29,7 +31,7 @@ namespace API_Service.Controllers
         {
             try
             {                
-                UserTaskDTO userTask = MapModel<UserTask, UserTaskDTO>.Map(await _repository.GetUserTask(userId));
+                UserTaskDTO userTask = _mapper.Map<UserTask, UserTaskDTO>(await _repository.GetUserTask(userId));
                 return userTask != null ? Request.CreateResponse(HttpStatusCode.OK, userTask) : Request.CreateResponse(HttpStatusCode.NoContent);
             }
             catch (Exception ex)

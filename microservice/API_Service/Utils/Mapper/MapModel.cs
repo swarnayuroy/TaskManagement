@@ -6,17 +6,22 @@ using AutoMapper;
 
 namespace API_Service.Utils.Mapper
 {
-    public class MapModel<TSource, TDestination>
+    public interface IMapperService
     {
-        private static AutoMapper.Mapper _mapper = new AutoMapper.Mapper(
-            new MapperConfiguration(
-                config => config.CreateMap<TSource, TDestination>().ReverseMap()
-            )
-        );
+        TDestination Map<TSource, TDestination>(TSource source);
+    }
+    public class MapModel: IMapperService
+    {
+        private static AutoMapper.Mapper _config; 
 
-        public static TDestination Map(TSource source)
+        public TDestination Map<TSource, TDestination>(TSource source)
         {
-            return _mapper.Map<TDestination>(source);
+            _config = new AutoMapper.Mapper(
+                new MapperConfiguration(
+                    cfg => cfg.CreateMap<TSource, TDestination>().ReverseMap()
+                )
+            );
+            return _config.Map<TDestination>(source);
         }
     }
 }

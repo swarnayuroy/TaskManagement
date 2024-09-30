@@ -4,6 +4,7 @@ using Unity.WebApi;
 using API_Service.Repository;
 using API_Service.Repository.Interface;
 using API_Service.Data;
+using API_Service.Utils.Mapper;
 
 namespace API_Service
 {
@@ -15,7 +16,7 @@ namespace API_Service
 
             // register all your components with the container here
             // it is NOT necessary to register your controllers
-
+            container.RegisterType<IMapperService, MapModel>();
             container.RegisterType<ITaskRepository, TaskRepository>();
             container.RegisterType<IUserRepository, UserRepository>();
             container.RegisterType<IContext, SampleData>();

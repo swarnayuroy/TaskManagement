@@ -18,10 +18,12 @@ namespace API_Service.Controllers
     {
         private readonly ILog _logger;
         private readonly IUserRepository _repository;
-        public AccountController(IUserRepository repository)
+        private readonly IMapperService _mapper;
+        public AccountController(IUserRepository repository, IMapperService mapper)
         {
             this._logger = LogManager.GetLogger(typeof(AccountController));
             this._repository = repository;
+            this._mapper = mapper;
         }
         
         [HttpGet]
@@ -30,7 +32,7 @@ namespace API_Service.Controllers
         {
             try
             {
-                UserCredential credential = MapModel<UserCredentialDTO, UserCredential>.Map(userCredential);
+                UserCredential credential = _mapper.Map<UserCredentialDTO, UserCredential>(userCredential);
                 bool response = await _repository.CheckValidUser(credential.Email, credential.Password);
                 return response ? Request.CreateResponse(HttpStatusCode.OK) : Request.CreateResponse(HttpStatusCode.NotFound);
             }
