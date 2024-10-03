@@ -46,11 +46,11 @@ namespace API_Service.Controllers
 
         [HttpPost]
         [Route("api/registeruser")]
-        public async Task<HttpResponseMessage> RegisterUser([FromBody] User user)
+        public async Task<HttpResponseMessage> RegisterUser([FromBody] UserDTO user)
         {
             try
             {
-                bool response = await _repository.AddUser(user);
+                bool response = await _repository.AddUser(_mapper.Map<UserDTO, User>(user));
                 return response ? Request.CreateResponse(HttpStatusCode.Created) : Request.CreateResponse(HttpStatusCode.BadRequest);
             }
             catch (Exception ex)

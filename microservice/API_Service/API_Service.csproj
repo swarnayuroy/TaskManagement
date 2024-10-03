@@ -110,7 +110,10 @@
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Data\IContext.cs" />
     <Compile Include="Data\SampleData.cs" />
+    <Compile Include="DTO\TaskCommentDTO.cs" />
+    <Compile Include="DTO\TaskDTO.cs" />
     <Compile Include="DTO\UserCredentialDTO.cs" />
+    <Compile Include="DTO\UserDTO.cs" />
     <Compile Include="DTO\UserTaskDTO.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>

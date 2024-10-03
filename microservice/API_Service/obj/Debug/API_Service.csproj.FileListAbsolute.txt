@@ -214,7 +214,6 @@ C:\Sample Personal\SampleProject\TaskManagement\microservice\API_Service\bin\Sys
 C:\Sample Personal\SampleProject\TaskManagement\microservice\API_Service\bin\System.Web.Http.xml
 C:\Sample Personal\SampleProject\TaskManagement\microservice\API_Service\bin\System.Web.Http.WebHost.xml
 C:\Sample Personal\SampleProject\TaskManagement\microservice\API_Service\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.xml
-C:\Sample Personal\SampleProject\TaskManagement\microservice\API_Service\obj\Debug\API_Service.csproj.AssemblyReference.cache
 C:\Sample Personal\SampleProject\TaskManagement\microservice\API_Service\obj\Debug\API_Service.csproj.CoreCompileInputs.cache
 C:\Sample Personal\SampleProject\TaskManagement\microservice\API_Service\obj\Debug\API_Service.csproj.CopyComplete
 C:\Sample Personal\SampleProject\TaskManagement\microservice\API_Service\obj\Debug\API_Service.dll

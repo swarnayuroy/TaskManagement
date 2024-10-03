@@ -59,11 +59,11 @@ namespace API_Service.Controllers
 
         [HttpPost]
         [Route("api/task/create")]
-        public async Task<HttpResponseMessage> CreateTask(Guid userId, [FromBody] Models.Task task)
+        public async Task<HttpResponseMessage> CreateTask(Guid userId, [FromBody] TaskDTO task)
         {
             try
             {
-                bool response = await _repository.AddTask(userId, task);
+                bool response = await _repository.AddTask(userId, _mapper.Map<TaskDTO, Models.Task>(task));
                 return response ? Request.CreateResponse(HttpStatusCode.Created) : Request.CreateResponse(HttpStatusCode.BadRequest);
             }
             catch (Exception ex)
@@ -76,11 +76,11 @@ namespace API_Service.Controllers
 
         [HttpPut]
         [Route("api/task/edit")]
-        public async Task<HttpResponseMessage> EditTask(Guid taskId, [FromBody] Models.Task task)
+        public async Task<HttpResponseMessage> EditTask(Guid taskId, [FromBody] TaskDTO task)
         {
             try
             {
-                bool response = await _repository.EditTask(taskId, task);
+                bool response = await _repository.EditTask(taskId, _mapper.Map<TaskDTO, Models.Task>(task));
                 return response ? Request.CreateResponse(HttpStatusCode.OK) : Request.CreateResponse(HttpStatusCode.NotFound);
             }
             catch (Exception ex)
@@ -109,11 +109,11 @@ namespace API_Service.Controllers
 
         [HttpPost]
         [Route("api/task/comment/add")]
-        public async Task<HttpResponseMessage> AddTaskComment(Guid userId, Guid taskId, [FromBody] TaskComment commentDetails)
+        public async Task<HttpResponseMessage> AddTaskComment(Guid userId, Guid taskId, [FromBody] TaskCommentDTO comment)
         {
             try
             {
-                bool response = await _repository.AddComment(userId, taskId, commentDetails);
+                bool response = await _repository.AddComment(userId, taskId, _mapper.Map<TaskCommentDTO, TaskComment>(comment));
                 return response ? Request.CreateResponse(HttpStatusCode.Created) : Request.CreateResponse(HttpStatusCode.BadRequest);
             }
             catch (Exception ex)
@@ -126,11 +126,11 @@ namespace API_Service.Controllers
 
         [HttpPut]
         [Route("api/task/comment/edit")]
-        public async Task<HttpResponseMessage> EditComment(Guid commentId, Guid userId, Guid taskId, [FromBody] TaskComment comment)
+        public async Task<HttpResponseMessage> EditComment(Guid commentId, Guid userId, Guid taskId, [FromBody] TaskCommentDTO comment)
         {
             try
             {
-                bool response = await _repository.EditComment(commentId, userId, taskId, comment);
+                bool response = await _repository.EditComment(commentId, userId, taskId, _mapper.Map<TaskCommentDTO, TaskComment>(comment));
                 return response ? Request.CreateResponse(HttpStatusCode.OK) : Request.CreateResponse(HttpStatusCode.NotFound);
             }
             catch (Exception ex)
