@@ -1,0 +1,34 @@
+.sign-in{
+  border: 1px solid;
+  width: 280px;
+  height: 320px;
+
+  h2, .submit-container, .link-container{
+    text-align: center;
+  }
+
+  .email-container, .password-container{
+    padding-inline-start: 35px;
+  }
+
+  .link-container{
+    padding: 10px;
+
+    .link{
+      text-decoration: none;
+      color: black;
+    }
+    .link:hover{
+      color: grey;
+    }
+  }
+
+  .submit-button{
+    width: 120px;
+    height: 30px;
+    border: none;
+    border-radius: 8px;
+    background-color: grey;
+    color: white;
+  }
+}
