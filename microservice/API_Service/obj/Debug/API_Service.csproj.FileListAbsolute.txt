@@ -218,8 +218,21 @@ C:\Sample Personal\SampleProject\TaskManagement\microservice\API_Service\obj\Deb
 C:\Sample Personal\SampleProject\TaskManagement\microservice\API_Service\obj\Debug\API_Service.csproj.CopyComplete
 C:\Sample Personal\SampleProject\TaskManagement\microservice\API_Service\obj\Debug\API_Service.dll
 C:\Sample Personal\SampleProject\TaskManagement\microservice\API_Service\obj\Debug\API_Service.pdb
-F:\Project\sample_project\TaskManagement\microservice\API_Service\obj\Debug\API_Service.csproj.AssemblyReference.cache
 F:\Project\sample_project\TaskManagement\microservice\API_Service\bin\AutoMapper.dll
 F:\Project\sample_project\TaskManagement\microservice\API_Service\bin\AutoMapper.xml
 C:\Sample Personal\SampleProject\TaskManagement\microservice\API_Service\bin\AutoMapper.dll
 C:\Sample Personal\SampleProject\TaskManagement\microservice\API_Service\bin\AutoMapper.xml
+F:\Project\sample_project\TaskManagement\microservice\API_Service\obj\Debug\API_Service.csproj.AssemblyReference.cache
+F:\Project\sample_project\TaskManagement\microservice\API_Service\bin\Newtonsoft.Json.Bson.dll
+F:\Project\sample_project\TaskManagement\microservice\API_Service\bin\System.Buffers.dll
+F:\Project\sample_project\TaskManagement\microservice\API_Service\bin\System.Memory.dll
+F:\Project\sample_project\TaskManagement\microservice\API_Service\bin\System.Numerics.Vectors.dll
+F:\Project\sample_project\TaskManagement\microservice\API_Service\bin\System.Web.Cors.dll
+F:\Project\sample_project\TaskManagement\microservice\API_Service\bin\System.Web.Http.Cors.dll
+F:\Project\sample_project\TaskManagement\microservice\API_Service\bin\Newtonsoft.Json.Bson.pdb
+F:\Project\sample_project\TaskManagement\microservice\API_Service\bin\Newtonsoft.Json.Bson.xml
+F:\Project\sample_project\TaskManagement\microservice\API_Service\bin\System.Buffers.xml
+F:\Project\sample_project\TaskManagement\microservice\API_Service\bin\System.Memory.xml
+F:\Project\sample_project\TaskManagement\microservice\API_Service\bin\System.Numerics.Vectors.xml
+F:\Project\sample_project\TaskManagement\microservice\API_Service\bin\System.Threading.Tasks.Extensions.xml
+F:\Project\sample_project\TaskManagement\microservice\API_Service\bin\System.Web.Http.Cors.xml

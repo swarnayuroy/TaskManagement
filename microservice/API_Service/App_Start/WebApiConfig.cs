@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Http;
+using System.Web.Http.Cors;
 
 namespace API_Service
 {
@@ -9,8 +10,11 @@ namespace API_Service
     {
         public static void Register(HttpConfiguration config)
         {
-            // Web API configuration and services
+            //Enable CORS
+            config.EnableCors(new EnableCorsAttribute("http://localhost:4200", headers:"*", methods:"*"));
 
+            // Web API configuration and services
+            
             // Web API routes
             config.MapHttpAttributeRoutes();
 
