@@ -26,7 +26,7 @@ namespace API_Service.Controllers
             this._mapper = mapper;
         }
         
-        [HttpGet]
+        [HttpPost]
         [Route("api/checkcredential")]
         public async Task<HttpResponseMessage> CheckCredentialIsValid([FromBody] UserCredentialDTO userCredential)
         {
