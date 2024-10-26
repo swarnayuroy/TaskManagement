@@ -1,8 +1,7 @@
 import { Component } from '@angular/core';
 import { AbstractControl, FormControl, FormGroupDirective, NgForm, Validators,FormGroup } from '@angular/forms';
-import {ErrorStateMatcher} from '@angular/material/core';
-import {MatFormFieldModule} from '@angular/material/form-field';
-
+import { TaskManagementService } from '../shared/task-management.service';
+import { UserCredential } from '../shared/user-credential.model';
 
 
 @Component({
@@ -10,6 +9,7 @@ import {MatFormFieldModule} from '@angular/material/form-field';
   templateUrl: './user-signin.component.html',
   styleUrls: ['./user-signin.component.scss'],
 })
+
 
 // export class MyErrorStateMatcher implements ErrorStateMatcher {
 // emailFormControl: any;
@@ -24,17 +24,22 @@ export class UserSigninComponent {
 
   loginForm!: FormGroup;
 
-  constructor() { }
+  constructor(public service: TaskManagementService) { }
 
   ngOnInit(): void {
     this.loginForm = new FormGroup({
     emailFormControl: new FormControl('',[Validators.required,Validators.email]),
-    password: new FormControl('',[Validators.required])
+    passwordFormControl: new FormControl('',[Validators.required])
     })
   }
 
-  onSubmit(){
-    console.log(this.loginForm);
+  onSubmit(form:FormGroup){
+    //console.log(this.loginForm);
+    let credential = new UserCredential();
+    credential.email = form.value['emailFormControl'];
+    credential.password = form.value['passwordFormControl'];
+
+    this.service.checkCredential(credential);
   }
   //matcher = new MyErrorStateMatcher();
 
