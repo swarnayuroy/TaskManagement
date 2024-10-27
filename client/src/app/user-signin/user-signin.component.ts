@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { AbstractControl, FormControl, FormGroupDirective, NgForm, Validators,FormGroup } from '@angular/forms';
 import { TaskManagementService } from '../shared/task-management.service';
-import { UserCredential } from '../shared/user-credential.model';
+import { UserCredentialDTO } from '../shared/user-credential.model';
 
 
 @Component({
@@ -24,7 +24,7 @@ export class UserSigninComponent {
 
   loginForm!: FormGroup;
 
-  constructor(public service: TaskManagementService) { }
+  constructor(private service: TaskManagementService) { }
 
   ngOnInit(): void {
     this.loginForm = new FormGroup({
@@ -34,13 +34,12 @@ export class UserSigninComponent {
   }
 
   onSubmit(form:FormGroup){
-    //console.log(this.loginForm);
-    let credential = new UserCredential();
-    credential.email = form.value['emailFormControl'];
-    credential.password = form.value['passwordFormControl'];
-
-    this.service.checkCredential(credential);
+    let credential = new UserCredentialDTO();
+    credential.Email = form.value['emailFormControl'];
+    credential.Password = form.value['passwordFormControl'];
+    this.service.checkCredential(credential).subscribe(response =>{
+      console.log(response);
+    });
   }
   //matcher = new MyErrorStateMatcher();
-
 }

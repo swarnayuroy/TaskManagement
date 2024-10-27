@@ -34,7 +34,7 @@ namespace API_Service.Controllers
             {
                 UserCredential credential = _mapper.Map<UserCredentialDTO, UserCredential>(userCredential);
                 bool response = await _repository.CheckValidUser(credential.Email, credential.Password);
-                return response ? Request.CreateResponse(HttpStatusCode.OK) : Request.CreateResponse(HttpStatusCode.NotFound);
+                return response ? Request.CreateResponse(HttpStatusCode.OK, response) : Request.CreateResponse(HttpStatusCode.NotFound, response);
             }
             catch (Exception ex)
             {

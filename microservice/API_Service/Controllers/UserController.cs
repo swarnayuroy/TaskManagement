@@ -22,11 +22,11 @@ namespace API_Service.Controllers
 
         [HttpGet]
         [Route("api/user/get/{id}")]
-        public async Task<HttpResponseMessage> Getuser(Guid id)
+        public async Task<HttpResponseMessage> Getuser(string id)
         {
             try
             {
-                Models.User user = await _repository.GetUser(id);
+                Models.User user = await _repository.GetUser(Guid.Parse(id));
                 return user != null ? Request.CreateResponse(HttpStatusCode.OK, user) : Request.CreateResponse(HttpStatusCode.NotFound);
             }
             catch (Exception ex)
