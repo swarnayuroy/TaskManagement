@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { AbstractControl, FormControl, FormGroupDirective, NgForm, Validators,FormGroup } from '@angular/forms';
 import { TaskManagementService } from '../shared/task-management.service';
 import { UserCredentialDTO } from '../shared/user-credential.model';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -22,9 +23,12 @@ import { UserCredentialDTO } from '../shared/user-credential.model';
 // }
 export class UserSigninComponent {
 
-  loginForm!: FormGroup;
+  public loginForm!: FormGroup;
+  public hide : boolean=false;
 
-  constructor(private service: TaskManagementService) { }
+  constructor(private service: TaskManagementService,
+    private router:Router
+  ) { }
 
   ngOnInit(): void {
     this.loginForm = new FormGroup({
@@ -39,7 +43,14 @@ export class UserSigninComponent {
     credential.Password = form.value['passwordFormControl'];
     this.service.checkCredential(credential).subscribe(response =>{
       console.log(response);
+      if(response){
+        this.router.navigate(['/taskDashboard']);
+      }
     });
   }
   //matcher = new MyErrorStateMatcher();
+
+  togglePassword() {
+    this.hide = !this.hide;
+  }
 }

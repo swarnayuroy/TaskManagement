@@ -10,15 +10,18 @@ import {MatFormFieldModule} from '@angular/material/form-field';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
 import { TaskManagementService } from './shared/task-management.service';
-import { HttpClientModule } from '@angular/common/http'
+import { HttpClientModule } from '@angular/common/http';
+import { TaskDashboardComponent } from './task-dashboard/task-dashboard.component'
 
 
 @NgModule({
   declarations: [
     AppComponent,
     UserSigninComponent,
-    UserSignupComponent
+    UserSignupComponent,
+    TaskDashboardComponent
   ],
   imports: [
     BrowserModule,
@@ -30,6 +33,7 @@ import { HttpClientModule } from '@angular/common/http'
     FlexLayoutModule,
     MatInputModule,
     MatIconModule,
+    MatButtonModule,
     HttpClientModule
    ],
   providers: [TaskManagementService],

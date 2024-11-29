@@ -14,14 +14,18 @@
       <label for="Password">Enter Password</label>
       <div>
         <mat-form-field appearance="outline">
-          <input type="password" matInput formControlName="passwordFormControl">
+          <input [type]="hide ? 'password' : 'text'" matInput formControlName="passwordFormControl">
+          <button mat-icon-button matSuffix (click)="togglePassword()">
+            <mat-icon class="visibility-class">{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+          </button>
           <!-- <mat-hint>Please enter your password</mat-hint> -->
               <mat-error>Inavlid password</mat-error>
         </mat-form-field>
       </div>
     </div>
     <div class="submit-container">
-      <button class="submit-button" type="submit" [disabled]="loginForm.invalid">Login</button>
+      <button type="submit" [disabled]="loginForm.invalid"
+      [ngClass]="{'black-button': loginForm.valid, 'submit-button': !loginForm.valid}">Login</button>
     </div>
     <div class="link-container">
       <div>
