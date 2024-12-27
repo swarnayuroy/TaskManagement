@@ -1,38 +1,40 @@
 <form class="sign-in" [formGroup]="loginForm" (ngSubmit)="onSubmit(loginForm)">
-  <h2>Sign-In</h2>
-    <div class="email-container">
-      <label for="Email">Enter Email</label>
-      <div>
-        <mat-form-field appearance="outline">
-          <input type="email" matInput formControlName="emailFormControl">
-          <!-- <mat-hint>Please enter a Valid email</mat-hint> -->
-          <mat-error>Inavlid or missing email</mat-error>
-        </mat-form-field>
-      </div>
+  <div class="form-head-container">
+    <h2>Sign-In</h2>
+  </div>  
+  <div class="email-container">
+    <label for="Email">Enter Email</label>
+    <div>
+      <mat-form-field appearance="outline">
+        <input type="email" matInput formControlName="emailFormControl">
+        <!-- <mat-hint>Please enter a Valid email</mat-hint> -->
+        <mat-error>Inavlid or missing email</mat-error>
+      </mat-form-field>
     </div>
-    <div class="password-container">
-      <label for="Password">Enter Password</label>
-      <div>
-        <mat-form-field appearance="outline">
-          <input [type]="hide ? 'password' : 'text'" matInput formControlName="passwordFormControl">
-          <button mat-icon-button matSuffix (click)="togglePassword()">
-            <mat-icon class="visibility-class">{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
-          </button>
-          <!-- <mat-hint>Please enter your password</mat-hint> -->
-              <mat-error>Inavlid password</mat-error>
-        </mat-form-field>
-      </div>
+  </div>
+  <div class="password-container">
+    <label for="Password">Enter Password</label>
+    <div>
+      <mat-form-field appearance="outline">
+        <input [type]="hide ? 'password' : 'text'" matInput formControlName="passwordFormControl">
+        <button mat-icon-button matSuffix (click)="togglePassword()">
+          <mat-icon class="visibility-class">{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+        </button>
+        <!-- <mat-hint>Please enter your password</mat-hint> -->
+        <mat-error>Inavlid password</mat-error>
+      </mat-form-field>
     </div>
-    <div class="submit-container">
-      <button type="submit" [disabled]="loginForm.invalid"
+  </div>
+  <div class="submit-container">
+    <button type="submit" [disabled]="loginForm.invalid"
       [ngClass]="{'black-button': loginForm.valid, 'submit-button': !loginForm.valid}">Login</button>
+  </div>
+  <div class="link-container">
+    <div>
+      <a href="#" class="link">Forgot Password</a>
     </div>
-    <div class="link-container">
-      <div>
-        <a href="#" class="link">Forgot Password</a>
-      </div>
-      <div>
-        <a routerLink="/signUp" class="link">Sign-Up</a>
-      </div>
+    <div>
+      <a routerLink="/signUp" class="link">Sign-Up</a>
     </div>
+  </div>
 </form>

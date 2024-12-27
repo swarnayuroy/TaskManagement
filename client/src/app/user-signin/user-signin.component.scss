@@ -1,12 +1,16 @@
 .sign-in{
   border: 1px solid;
   width: 280px;
-  height: 335px;
+  height: 350px;
 
   h2, .submit-container, .link-container{
     text-align: center;
   }
 
+  .form-head-container{
+    padding: 15px;
+  }
+  
   .email-container, .password-container{
     padding-inline-start: 35px;
   }
@@ -22,10 +26,6 @@
       height: 30px;
       font-size: 14px;
     }
-  }
-  .mat-mdc-form-field-error-wrapper{
-    font-size: 10px;
-    color: red;
   }
 
   .link-container{
@@ -55,9 +55,5 @@
     border-radius: 8px;
     background-color: black;
     color: white;
-  }
-  .visibility-class{
-    // width: 20px;
-    // height: 15px;
   }
 }
