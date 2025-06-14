@@ -1,0 +1,118 @@
+﻿body {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+}
+
+.board-layout {
+    border: 2px solid darkgray;
+    border-radius: 10px;
+    width: 80%;
+    height: auto;
+    padding: 10px;
+}
+
+.board-head-layout {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 5px;
+}
+
+.board-profile {
+    height: 50px;
+}
+
+.board-profile-notification {
+    background: none;
+    border: none;
+    width: 40px;
+    height: 30px;
+    cursor: pointer;
+}
+
+.board-profile-notification_count {
+    padding: 1.2px;
+    width: 22px;
+    background: darkgrey;
+    border: 1px solid black;
+    border-radius: 50%;
+    position: absolute;
+    z-index: 0;
+}
+
+.board-profile-notification_count_text {
+    font-size: 10px;
+    font-weight: bold;
+}
+
+.board-profile-icon {
+    border: 2px solid darkgray;
+    border-radius: 50%;
+    width: 50px;
+    height: 90%;
+    cursor: pointer;
+}
+
+    .board-profile-icon .board-profile-name_icon {
+        font-size: 18px;
+    }
+
+.board-profile .board-profile-icon_dropdown,
+.board-profile .board-profile-notification_dropdown {
+    display: none;
+    border: 1px solid darkgray;
+    border-radius: 5px;
+    position: absolute;
+    background-color: white;
+}
+
+.board-profile-icon_dropdown a {
+    border: 1px solid darkgray;
+    padding: 15px 25px;
+    text-decoration: none;
+    display: block;
+    color: dimgrey;
+    font-size: 15px;
+}
+
+.board-profile-notification_dropdown p {
+    padding: 10px;
+    border: 1px solid darkgray;
+}
+
+.board-task-layout {
+    padding: 15px;
+    border: 1px solid darkgray;
+    border-radius: 5px;
+    height: 520px;
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.board-task-column {
+    border: 1px solid darkgray;
+    width: 18%;
+    background: lightgray;
+}
+
+    .board-task-column .board-task-column_label {
+        text-align: center;
+        padding: 5px;
+        font-weight: 600;
+    }
+
+    .board-task-column .board-task-list {
+        border: 2px solid darkgray;
+        height: 93.5%;
+        background: white;
+    }
+
+#board-task-onHold {
+    background: darkgrey;
+}
+
+#board-task-onHold_list {
+    background: lightgray;
+}

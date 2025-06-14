@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.35931.194
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "microservice", "microservice\microservice.csproj", "{DC897F45-E8A3-4B76-B9A6-3CEDC8E561A1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "client", "client\client.csproj", "{3B9F6316-780F-48EB-B642-CA439F63C3E7}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{DC897F45-E8A3-4B76-B9A6-3CEDC8E561A1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DC897F45-E8A3-4B76-B9A6-3CEDC8E561A1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DC897F45-E8A3-4B76-B9A6-3CEDC8E561A1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DC897F45-E8A3-4B76-B9A6-3CEDC8E561A1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3B9F6316-780F-48EB-B642-CA439F63C3E7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3B9F6316-780F-48EB-B642-CA439F63C3E7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3B9F6316-780F-48EB-B642-CA439F63C3E7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3B9F6316-780F-48EB-B642-CA439F63C3E7}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {635C4A77-DD37-4176-A030-2EE9D6D4B22F}
+	EndGlobalSection
+EndGlobal
