@@ -11,9 +11,13 @@ namespace client.Utils
     {
         public static ClaimsPrincipal DecodeToken(string sessionToken)
         {
-            var token = new JwtSecurityTokenHandler().ReadJwtToken(sessionToken);
-            var identity = new ClaimsIdentity(token.Claims);
-            return new ClaimsPrincipal(identity);
+            if (!String.IsNullOrEmpty(sessionToken))
+            {
+                var token = new JwtSecurityTokenHandler().ReadJwtToken(sessionToken);
+                var identity = new ClaimsIdentity(token.Claims);
+                return new ClaimsPrincipal(identity);
+            }
+            return null;
         }
     }
 }

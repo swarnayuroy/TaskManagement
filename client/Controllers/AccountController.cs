@@ -1,21 +1,24 @@
-﻿using client.DataLayer;
-using client.Models;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using client.DataLayer;
+using client.Models;
+using client.Utils;
 
 namespace client.Controllers
 {
     public class AccountController : Controller
     {
         private readonly IDataAccessLayer _dataAccess;
+        private Logger<AccountController> _logger;
         public AccountController(IDataAccessLayer dataAccess)
         {
             this._dataAccess = dataAccess;
+            this._logger = new Logger<AccountController>();
         }
         
         // GET: SignIn
@@ -76,10 +79,14 @@ namespace client.Controllers
                     Secure = true
                 };
                 Response.Cookies.Add(cookie);
+                _logger.LogDetails(LogType.INFO, $"{formModel.SignIn.Email} signed in successfully.");
 
                 //will be redirecting to "Home/TaskBoard"
                 return RedirectToAction("TaskBoard", "Home");
             }
+
+            _logger.LogDetails(LogType.WARNING, response.Message);
+
             ModelState.Clear();
             return View("SignIn", new Form {
                 showSignInForm = true,
@@ -114,6 +121,8 @@ namespace client.Controllers
             var response = await _dataAccess.RegisterUser(formModel.SignUp);
             if (response.Status)
             {
+                _logger.LogDetails(LogType.INFO, response.Message);
+
                 ModelState.Clear();
                 return View("SignIn", new Form
                 {
@@ -128,6 +137,9 @@ namespace client.Controllers
                     }
                 });
             }
+
+            _logger.LogDetails(LogType.WARNING, response.Message);
+
             return View("SignIn", new Form
             {
                 SignUp = formModel.SignUp,

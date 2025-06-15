@@ -6,6 +6,7 @@ using System.Web;
 using System.Net.Http;
 using client.API_Service;
 using client.Models;
+using client.Utils;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
@@ -15,9 +16,11 @@ namespace client.DataLayer
     {
         private readonly IService _apiService;
         private HttpResponseMessage _response;
+        private Logger<DataAccessLayer> _logger;
         public DataAccessLayer(IService apiService)
         {
             this._apiService = apiService;
+            this._logger = new Logger<DataAccessLayer>();
         }
 
         public async Task<ServiceResponse> CheckCredential(UserCredential credential)
@@ -35,8 +38,9 @@ namespace client.DataLayer
                                 : _response.ReasonPhrase
                 };
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                _logger.LogDetails(LogType.ERROR, ex.Message);
                 return _response.Content != null ? 
                     new ServiceResponse { Status = false, StatusCode = _response.StatusCode, Message = $"Invalid response." } 
                     : new ServiceResponse { Status = false, StatusCode = System.Net.HttpStatusCode.BadRequest, Message = $"Failed to process your request" };
@@ -58,8 +62,9 @@ namespace client.DataLayer
                                 : _response.ReasonPhrase
                 };
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                _logger.LogDetails(LogType.ERROR, ex.Message);
                 return _response.Content != null ?
                     new ServiceResponse { Status = false, StatusCode = _response.StatusCode, Message = $"Invalid response." }
                     : new ServiceResponse { Status = false, StatusCode = System.Net.HttpStatusCode.BadRequest, Message = $"Failed to process your request" };
@@ -77,7 +82,7 @@ namespace client.DataLayer
                     {
                         Status = true,
                         StatusCode = _response.StatusCode,
-                        Message = $"User detail has been found.",
+                        Message = $"Detail for {userId} has been found.",
                         Data = JsonConvert.DeserializeObject<UserDetail>(_response.Content.ReadAsStringAsync().Result)
                     };
                 }
@@ -90,8 +95,9 @@ namespace client.DataLayer
                                     : _response.ReasonPhrase
                 };
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                _logger.LogDetails(LogType.ERROR, ex.Message);
                 return _response.Content != null ?
                     new ServiceResponse { Status = false, StatusCode = _response.StatusCode, Message = $"Invalid response." }
                     : new ServiceResponse { Status = false, StatusCode = System.Net.HttpStatusCode.BadRequest, Message = $"Failed to process your request" };

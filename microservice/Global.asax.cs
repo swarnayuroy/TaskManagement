@@ -14,6 +14,7 @@ namespace microservice
             GlobalConfiguration.Configure(WebApiConfig.Register);
             UnityConfig.RegisterComponents();
             GlobalConfiguration.Configuration.Formatters.XmlFormatter.SupportedMediaTypes.Clear();
+            log4net.Config.XmlConfigurator.Configure();
         }
     }
 }

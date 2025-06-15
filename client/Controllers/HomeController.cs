@@ -21,9 +21,12 @@ namespace client.Controllers
         private readonly IDataAccessLayer _dataAccess;
         private UserDetail _userDetail;
         private ServiceResponse _userDataResponse;
+        private Logger<HomeController> _logger;
+
         public HomeController(IDataAccessLayer dataAccess)
         {
             this._dataAccess = dataAccess;
+            this._logger = new Logger<HomeController>();
         }
         
         public async Task<ActionResult> TaskBoard()
@@ -41,16 +44,20 @@ namespace client.Controllers
                         _userDataResponse = await _dataAccess.GetUserDetail(sessionToken, userId);
                         if (_userDataResponse.Status)
                         {
+                            _logger.LogDetails(LogType.INFO, $"user details recieved for {userId}");
                             _userDetail = (_userDataResponse as ServiceDataResponse<UserDetail>)?.Data;
                         }
                         else if (_userDataResponse.StatusCode == System.Net.HttpStatusCode.Unauthorized)
                         {
+                            _logger.LogDetails(LogType.WARNING, $"Session for {userId} is unauthorized!");
                             return RedirectToAction("Logout");
                         }
                         else
                         {
                             return View(new UserSessionDetail
                             {
+                                AvatarText = _userDetail.Name,
+                                UserDetail = _userDetail,
                                 ToastNotification = new ToastNotification
                                 {
                                     IsEnable = true,
@@ -79,19 +86,34 @@ namespace client.Controllers
         }
         public ActionResult Logout()
         {
-            var cookie = Request.Cookies["sessionToken"];
-            if (cookie != null)
+            try
             {
-                cookie.Expires = DateTime.Now.AddMinutes(-1);
-                cookie.Value = String.Empty;
-                Response.Cookies.Add(cookie);
-                Request.Cookies.Remove("sessionToken");
+                var cookie = Request.Cookies["sessionToken"];
+                if (cookie != null)
+                {
+                    var claimsPrincipal = JwtHelper.DecodeToken(cookie.Value);
+                    string userId = claimsPrincipal.FindFirst(JwtRegisteredClaimNames.Sub)?.Value;
 
-                Response.Cache.SetExpires(DateTime.Now.AddMinutes(-1));
-                Response.Cache.SetCacheability(HttpCacheability.NoCache);
-                Response.Cache.SetNoStore();
+                    cookie.Expires = DateTime.Now.AddMinutes(-1);
+                    cookie.Value = String.Empty;
+                    Response.Cookies.Add(cookie);
+                    Request.Cookies.Remove("sessionToken");
+
+                    Response.Cache.SetExpires(DateTime.Now.AddMinutes(-1));
+                    Response.Cache.SetCacheability(HttpCacheability.NoCache);
+                    Response.Cache.SetNoStore();
+
+                    _logger.LogDetails(LogType.INFO, $"{userId} logged out");
+                }
+                
+                return RedirectToAction("SignIn", "Account");
             }
-            return RedirectToAction("SignIn", "Account");
+            catch (Exception ex)
+            {
+                _logger.LogDetails(LogType.ERROR, ex.Message);
+                return RedirectToAction("SignIn", "Account");
+            }
+            
         }
     }
 }

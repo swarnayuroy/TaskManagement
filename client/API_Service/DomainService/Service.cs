@@ -8,6 +8,7 @@ using System.Net.Http.Headers;
 using System.Configuration;
 using System.Threading.Tasks;
 using client.Models;
+using client.Utils;
 using Newtonsoft.Json;
 using System.Text;
 
@@ -16,14 +17,16 @@ namespace client.API_Service.DomainService
     public class Service : IService
     {
         private readonly HttpClient _client;
+        private Logger<Service> _logger;
         public Service()
         {
-            _client = new HttpClient
+            this._logger = new Logger<Service>();
+            this._client = new HttpClient
             {
                 Timeout = TimeSpan.FromSeconds(10)
             };
-            _client.BaseAddress = new Uri(ConfigurationManager.AppSettings["serviceUri"]);
-            _client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            this._client.BaseAddress = new Uri(ConfigurationManager.AppSettings["serviceUri"]);
+            this._client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
         }
 
         #region POST Service
@@ -33,11 +36,13 @@ namespace client.API_Service.DomainService
             {
                 StringContent userCredential = new StringContent(JsonConvert.SerializeObject(credential), Encoding.UTF8, "application/json");
                 HttpResponseMessage response = await _client.PostAsync($"{_client.BaseAddress}/account/check", userCredential);
+                _logger.LogDetails(LogType.INFO, response.StatusCode.ToString());
 
                 return response;
             }
             catch (TaskCanceledException ex)
             {
+                _logger.LogDetails(LogType.ERROR, ex.Message);
                 if (ex.InnerException is TimeoutException)
                 {
                     return new HttpResponseMessage(HttpStatusCode.RequestTimeout) { ReasonPhrase = "Request timeout" };
@@ -54,11 +59,13 @@ namespace client.API_Service.DomainService
             {
                 StringContent userDetail = new StringContent(JsonConvert.SerializeObject(detail), Encoding.UTF8, "application/json");
                 HttpResponseMessage response = await _client.PostAsync($"{_client.BaseAddress}/account/register", userDetail);
+                _logger.LogDetails(LogType.INFO, response.StatusCode.ToString());
 
                 return response;
             }
             catch (TaskCanceledException ex)
             {
+                _logger.LogDetails(LogType.ERROR, ex.Message);
                 if (ex.InnerException is TimeoutException)
                 {
                     return new HttpResponseMessage(HttpStatusCode.RequestTimeout) { ReasonPhrase = "Request timeout" };
@@ -78,11 +85,13 @@ namespace client.API_Service.DomainService
             {
                 _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
                 HttpResponseMessage response = await _client.GetAsync($"{_client.BaseAddress}/user/get/{userId}");
-
+                _logger.LogDetails(LogType.INFO, response.StatusCode.ToString());
+                
                 return response;
             }
             catch (TaskCanceledException ex)
             {
+                _logger.LogDetails(LogType.ERROR, ex.Message);
                 if (ex.InnerException is TimeoutException)
                 {
                     return new HttpResponseMessage(HttpStatusCode.RequestTimeout) { ReasonPhrase = "Request timeout" };

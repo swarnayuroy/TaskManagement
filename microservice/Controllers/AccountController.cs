@@ -14,9 +14,11 @@ namespace microservice.Controllers
     public class AccountController : ApiController
     {
         private readonly IAccountService _accountService;
+        private Logger<AccountController> _logger;
         public AccountController(IAccountService accountService)
         {
             this._accountService = accountService;
+            this._logger = new Logger<AccountController>();
         }
         
         [HttpPost]
@@ -26,12 +28,15 @@ namespace microservice.Controllers
             try
             {
                 var serviceResponse = await _accountService.Check(credentialDetail.Email, credentialDetail.Password);
+                _logger.LogDetails(LogType.INFO, serviceResponse.Message);
+
                 return serviceResponse.Status ? Request.CreateResponse(HttpStatusCode.OK, (serviceResponse as ResponseDataDetail<string>).Data)
                     : Request.CreateErrorResponse(HttpStatusCode.Forbidden, serviceResponse.Message);
             }
             catch (Exception ex)
             {
-                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
+                _logger.LogDetails(LogType.ERROR, ex.Message);
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "Some error occurred");
             }            
         }
 
@@ -42,12 +47,15 @@ namespace microservice.Controllers
             try
             {
                 var serviceResponse = await _accountService.Register(dtoDetails);
+                _logger.LogDetails(LogType.INFO, serviceResponse.Message);
+
                 return serviceResponse.Status ? Request.CreateResponse(HttpStatusCode.Created, serviceResponse.Message)
                     : Request.CreateErrorResponse(HttpStatusCode.BadRequest, serviceResponse.Message);
             }
             catch (Exception ex)
             {
-                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
+                _logger.LogDetails(LogType.ERROR, ex.Message);
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "Some error occurred");
             }
         }
     }
