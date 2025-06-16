@@ -14,7 +14,7 @@ namespace microservice.Models
     {
         public Guid Id { get; set; }
         public string Title { get; set; }
-        public int ExecutionMode { get; set; }
+        public ExecutionType ExecutionMode { get; set; }
         public DateTime CreatedAt { get; set; }
     }
 }

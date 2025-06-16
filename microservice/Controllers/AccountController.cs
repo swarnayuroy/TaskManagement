@@ -30,7 +30,7 @@ namespace microservice.Controllers
                 var serviceResponse = await _accountService.Check(credentialDetail.Email, credentialDetail.Password);
                 _logger.LogDetails(LogType.INFO, serviceResponse.Message);
 
-                return serviceResponse.Status ? Request.CreateResponse(HttpStatusCode.OK, (serviceResponse as ResponseDataDetail<string>).Data)
+                return serviceResponse.Status ? Request.CreateResponse(HttpStatusCode.OK, (serviceResponse as ResponseDataDetail<string>)?.Data)
                     : Request.CreateErrorResponse(HttpStatusCode.Forbidden, serviceResponse.Message);
             }
             catch (Exception ex)

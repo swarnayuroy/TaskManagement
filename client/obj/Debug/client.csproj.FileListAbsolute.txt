@@ -235,3 +235,4 @@ F:\Project\New folder\TaskManagement\client\obj\Debug\client.pdb
 F:\Project\New folder\TaskManagement\client\bin\log4net.dll
 F:\Project\New folder\TaskManagement\client\bin\log4net.pdb
 F:\Project\New folder\TaskManagement\client\bin\log4net.xml
+F:\Project\New folder\TaskManagement\client\obj\Debug\client.csproj.AssemblyReference.cache

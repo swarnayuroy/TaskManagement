@@ -339,3 +339,4 @@ F:\Project\New folder\TaskManagement\microservice\obj\Debug\microservice.pdb
 F:\Project\New folder\TaskManagement\microservice\bin\log4net.dll
 F:\Project\New folder\TaskManagement\microservice\bin\log4net.pdb
 F:\Project\New folder\TaskManagement\microservice\bin\log4net.xml
+F:\Project\New folder\TaskManagement\microservice\obj\Debug\microservice.csproj.AssemblyReference.cache

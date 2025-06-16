@@ -19,8 +19,6 @@ namespace client.Controllers
     public class HomeController : Controller
     {
         private readonly IDataAccessLayer _dataAccess;
-        private UserDetail _userDetail;
-        private ServiceResponse _userDataResponse;
         private Logger<HomeController> _logger;
 
         public HomeController(IDataAccessLayer dataAccess)
@@ -39,40 +37,40 @@ namespace client.Controllers
 
                 if (!String.IsNullOrEmpty(userId))
                 {
-                    if (_userDetail == null)
+                    UserDetail userDetail = new UserDetail();
+                    var userDataResponse = await _dataAccess.GetUserDetail(sessionToken, userId);
+
+                    if (userDataResponse.Status)
                     {
-                        _userDataResponse = await _dataAccess.GetUserDetail(sessionToken, userId);
-                        if (_userDataResponse.Status)
-                        {
-                            _logger.LogDetails(LogType.INFO, $"user details recieved for {userId}");
-                            _userDetail = (_userDataResponse as ServiceDataResponse<UserDetail>)?.Data;
-                        }
-                        else if (_userDataResponse.StatusCode == System.Net.HttpStatusCode.Unauthorized)
-                        {
-                            _logger.LogDetails(LogType.WARNING, $"Session for {userId} is unauthorized!");
-                            return RedirectToAction("Logout");
-                        }
-                        else
-                        {
-                            return View(new UserSessionDetail
-                            {
-                                AvatarText = _userDetail.Name,
-                                UserDetail = _userDetail,
-                                ToastNotification = new ToastNotification
-                                {
-                                    IsEnable = true,
-                                    Type = _userDataResponse.StatusCode,
-                                    StatusIcon = ToastNotification.WARNING_ICON,
-                                    Message = _userDataResponse.Message
-                                }
-                            });
-                        }                        
+                        _logger.LogDetails(LogType.INFO, $"User details fetched for {userId}");
+                        userDetail = (userDataResponse as ServiceDataResponse<UserDetail>)?.Data;
                     }
-                    
+                    else if (userDataResponse.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+                    {
+                        _logger.LogDetails(LogType.WARNING, $"Unauthorized session for user id:{userId}");
+                        return RedirectToAction("Logout");
+                    }
+                    else
+                    {
+                        _logger.LogDetails(LogType.ERROR, userDataResponse.Message);
+                        return View(new UserSessionDetail
+                        {
+                            AvatarText = claimsPrincipal.FindFirst(ClaimTypes.Name)?.Value,
+                            UserDetail = userDetail,
+                            ToastNotification = new ToastNotification
+                            {
+                                IsEnable = true,
+                                Type = userDataResponse.StatusCode,
+                                StatusIcon = ToastNotification.WARNING_ICON,
+                                Message = userDataResponse.Message
+                            }
+                        });
+                    }
+
                     return View(new UserSessionDetail
                     {
-                        AvatarText = _userDetail.Name,
-                        UserDetail = _userDetail,
+                        AvatarText = userDetail.Name,
+                        UserDetail = userDetail,
                         ToastNotification = new ToastNotification
                         {
                             IsEnable = false,                            
