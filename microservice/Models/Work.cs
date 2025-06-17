@@ -18,14 +18,11 @@ namespace microservice.Models
     {
         public Guid Id { get; set; }
         public string Title { get; set; }
-        public string Description { get; set; }        
-        public int Status { get; set; }
+        public string Description { get; set; }
+        public WorkStatus Status { get; set; }
         public DateTime CreatedAt { get; set; }
+        public DateTime EstimatedCompletion { get; set; }
         public DateTime StartedAt { get; set; }
         public DateTime EndedAt { get; set; }
-    }
-    public class GroupWork : Work
-    {
-        
     }
 }
