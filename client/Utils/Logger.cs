@@ -30,7 +30,7 @@ namespace client.Utils
                     _log.Info(message);
                     break;
                 case LogType.WARNING:
-                    _log.Info(message);
+                    _log.Warn(message);
                     break;
                 default:
                     _log.Fatal(message);
