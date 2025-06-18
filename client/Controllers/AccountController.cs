@@ -8,6 +8,7 @@ using System.Web.Mvc;
 using client.DataLayer;
 using client.Models;
 using client.Utils;
+using client.Utils.Filter;
 
 namespace client.Controllers
 {
@@ -56,24 +57,26 @@ namespace client.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> SignIn(Form formModel)
         {
-            if (!ModelState.IsValid)
+            ServiceResponse response = new ServiceResponse();
+            try
             {
-                return View(new Form
+                if (!ModelState.IsValid)
                 {
-                    SignIn = formModel.SignIn,
-                    showSignInForm = true,
-                    showSignUpForm = false,
-                    ToastNotification = new ToastNotification
+                    return View(new Form
                     {
-                        IsEnable = false,
-                    }
-                });
-            }
-            var response = await _dataAccess.CheckCredential(formModel.SignIn);
-            if (response.Status)
-            {
-                string sessionToken = response.Message;
-                var cookie = new HttpCookie("sessionToken", sessionToken) 
+                        SignIn = formModel.SignIn,
+                        showSignInForm = true,
+                        showSignUpForm = false,
+                        ToastNotification = new ToastNotification
+                        {
+                            IsEnable = false,
+                        }
+                    });
+                }
+                response = await _dataAccess.CheckCredential(formModel.SignIn);
+                string sessionToken = FilterResponse<string>.GetData(response);
+
+                var cookie = new HttpCookie("sessionToken", sessionToken)
                 {
                     HttpOnly = true,
                     Secure = true
@@ -84,21 +87,24 @@ namespace client.Controllers
                 //will be redirecting to "Home/TaskBoard"
                 return RedirectToAction("TaskBoard", "Home");
             }
+            catch (Exception ex)
+            {
+                _logger.LogDetails(LogType.WARNING, ex.Message);
 
-            _logger.LogDetails(LogType.WARNING, response.Message);
-
-            ModelState.Clear();
-            return View("SignIn", new Form {
-                showSignInForm = true,
-                showSignUpForm = false,
-                ToastNotification = new ToastNotification
+                ModelState.Clear();
+                return View("SignIn", new Form
                 {
-                    IsEnable = true,
-                    Type = response.StatusCode,
-                    StatusIcon = ToastNotification.WARNING_ICON,
-                    Message = response.Message
-                }
-            });
+                    showSignInForm = true,
+                    showSignUpForm = false,
+                    ToastNotification = new ToastNotification
+                    {
+                        IsEnable = true,
+                        Type = response.StatusCode,
+                        StatusIcon = ToastNotification.WARNING_ICON,
+                        Message = ex.Message
+                    }
+                });
+            }            
         }
 
         [HttpPost]

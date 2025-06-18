@@ -28,13 +28,22 @@ namespace client.DataLayer
             try
             {
                 _response = await _apiService.CheckCredential(credential);
+                if (_response.IsSuccessStatusCode)
+                {
+                    return new ServiceDataResponse<string>
+                    {
+                        Status = true,
+                        StatusCode = _response.StatusCode,
+                        Message = $"Token shared to {credential.Email}",
+                        Data = JsonConvert.DeserializeObject<string>(_response.Content.ReadAsStringAsync().Result)
+                    };
+                }
                 return new ServiceResponse
                 {
-                    Status = _response.IsSuccessStatusCode ? true : false,
+                    Status = false,
                     StatusCode = _response.StatusCode,
-                    Message = _response.Content != null ? _response.StatusCode == System.Net.HttpStatusCode.OK ?
-                        JsonConvert.DeserializeObject<string>(_response.Content.ReadAsStringAsync().Result)
-                            : JObject.Parse(await _response.Content.ReadAsStringAsync())["Message"]?.ToString()
+                    Message = _response.Content != null ? 
+                        JObject.Parse(await _response.Content.ReadAsStringAsync())["Message"]?.ToString()
                                 : _response.ReasonPhrase
                 };
             }

@@ -10,6 +10,7 @@ using System.Web.UI;
 using client.DataLayer;
 using client.Models;
 using client.Utils;
+using client.Utils.CustomException;
 using client.Utils.Filter;
 
 namespace client.Controllers
@@ -29,59 +30,60 @@ namespace client.Controllers
         
         public async Task<ActionResult> TaskBoard()
         {
-            string sessionToken = Request.Cookies["sessionToken"]?.Value;
-            if (!String.IsNullOrEmpty(sessionToken))
+            var claimsPrincipal = new ClaimsPrincipal();
+            var userDataResponse = new ServiceResponse();
+            var userDetail = new UserDetail();
+
+            try
             {
-                var claimsPrincipal = JwtHelper.DecodeToken(sessionToken);
-                string userId = claimsPrincipal.FindFirst(JwtRegisteredClaimNames.Sub)?.Value;
-
-                if (!String.IsNullOrEmpty(userId))
+                string sessionToken = Request.Cookies["sessionToken"]?.Value;
+                if (!String.IsNullOrEmpty(sessionToken))
                 {
-                    UserDetail userDetail = new UserDetail();
-                    var userDataResponse = await _dataAccess.GetUserDetail(sessionToken, userId);
+                    claimsPrincipal = JwtHelper.DecodeToken(sessionToken);
+                    string userId = claimsPrincipal.FindFirst(JwtRegisteredClaimNames.Sub)?.Value;
 
-                    if (userDataResponse.Status)
+                    if (!String.IsNullOrEmpty(userId))
                     {
-                        _logger.LogDetails(LogType.INFO, $"User details fetched for {userId}");
-                        userDetail = (userDataResponse as ServiceDataResponse<UserDetail>)?.Data;
-                    }
-                    else if (userDataResponse.StatusCode == System.Net.HttpStatusCode.Unauthorized)
-                    {
-                        _logger.LogDetails(LogType.WARNING, $"Unauthorized session for user id:{userId}");
-                        return RedirectToAction("Logout");
-                    }
-                    else
-                    {
-                        _logger.LogDetails(LogType.ERROR, userDataResponse.Message);
+                        userDataResponse = await _dataAccess.GetUserDetail(sessionToken, userId);
+                        userDetail = FilterResponse<UserDetail>.GetData(userDataResponse);
+
                         return View(new UserSessionDetail
                         {
-                            AvatarText = claimsPrincipal.FindFirst(ClaimTypes.Name)?.Value,
+                            AvatarText = userDetail.Name,
                             UserDetail = userDetail,
                             ToastNotification = new ToastNotification
                             {
-                                IsEnable = true,
-                                Type = userDataResponse.StatusCode,
-                                StatusIcon = ToastNotification.WARNING_ICON,
-                                Message = userDataResponse.Message
+                                IsEnable = false,
                             }
                         });
                     }
-
-                    return View(new UserSessionDetail
-                    {
-                        AvatarText = userDetail.Name,
-                        UserDetail = userDetail,
-                        ToastNotification = new ToastNotification
-                        {
-                            IsEnable = false,                            
-                        }
-                    });
+                    return RedirectToAction("Logout");
                 }
-
+                return RedirectToAction("SignIn", "Account");
+            }
+            catch (UnauthorizedException ex)
+            {
+                _logger.LogDetails(LogType.WARNING, $"{ex.Message}");
                 return RedirectToAction("Logout");
             }
-            return RedirectToAction("SignIn", "Account");
+            catch (Exception ex)
+            {
+                _logger.LogDetails(LogType.ERROR, ex.Message);
+                return View(new UserSessionDetail
+                {
+                    AvatarText = claimsPrincipal.FindFirst(ClaimTypes.Name)?.Value,
+                    UserDetail = userDetail,
+                    ToastNotification = new ToastNotification
+                    {
+                        IsEnable = true,
+                        Type = userDataResponse.StatusCode,
+                        StatusIcon = ToastNotification.WARNING_ICON,
+                        Message = userDataResponse.Message
+                    }
+                });
+            }
         }
+
         public ActionResult Logout()
         {
             try
