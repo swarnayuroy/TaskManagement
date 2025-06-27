@@ -19,7 +19,7 @@ namespace client.Models
 
         [Required(ErrorMessage = "Please enter a password")]
         [StringLength(15, MinimumLength = 8, ErrorMessage = "Password should be of length 8-15 characters")]
-        [RegularExpression(@"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^\da-zA-Z]).{8,15}$", ErrorMessage = "Please enter a valid password.")]
+        [RegularExpression(@"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^\da-zA-Z]).*$", ErrorMessage = "Please enter a valid password.")]
         public string Password { get; set; }
     }
 }
