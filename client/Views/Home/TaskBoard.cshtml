@@ -42,7 +42,31 @@
     <div class="board-layout">
         <div class="board-head-layout">
             <div class="board-nav-section">
-
+                <a href="" class="board-logo">
+                    <i class="fa-solid fa-list-check"></i> <span id="logo-text">Task Board</span>
+                </a>
+                <a href="" class="board-nav">
+                    <span>Board</span>
+                </a>
+                <a href="" class="board-nav">
+                    <span>Report</span>
+                </a>
+                <div class="create-action">
+                    <button id="create-btn" onclick="toggleCreateDropdown()">Create +</button>
+                    <div class="create-section">
+                        <a href="#">Create Topic ></a>
+                        <a href="#">Create Task >></a>
+                    </div>
+                </div>
+                <div class="board-topic-selection">
+                    <select id="board-topic-select">
+                        <option value="0">--Select Topic--</option>
+                        <option value="topic1">Kedarnath Trip</option>
+                        <option value="topic2">Home Relocation</option>
+                    </select>
+                    <!-- <span class="topic-type-icon" style="cursor: pointer; font-size: 20px;"><i class="fa-solid fa-users"></i></span> -->
+                    <span class="topic-type-icon" style="cursor: pointer; font-size: 20px;"><i class="fa-solid fa-user"></i></span>
+                </div>
             </div>
             <div class="board-profile">
                 <button class="board-profile-notification" onclick="toggleNotificationDropdown()">

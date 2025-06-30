@@ -20,6 +20,76 @@
     padding: 5px;
 }
 
+.board-nav-section {
+    width: 70%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+    .board-nav-section a {
+        text-decoration: none;
+        color: black;
+    }
+
+.board-logo {
+    cursor: default;
+}
+
+    .board-logo i {
+        font-size: 22px;
+        font-weight: bold;
+    }
+
+    .board-logo #logo-text {
+        font-size: 25px;
+        font-family: Broadway;
+        font-weight: bold;
+    }
+
+.board-nav span {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.board-nav:hover {
+    color: darkgray;
+}
+
+.create-action #create-btn {
+    padding: 5px;
+    border: none;
+    border-radius: 5px;
+    background-color: black;
+    font-size: 18px;
+    color: white;
+    cursor: pointer;
+}
+
+.create-action .create-section {
+    display: none;
+    border: 1px solid gray;
+    border-radius: 5px;
+    background: white;
+    position: absolute;
+}
+
+    .create-action .create-section a {
+        padding: 10px;
+        color: black;
+        font-size: 16px;
+        border: 1px solid black;
+    }
+
+.board-topic-selection #board-topic-select {
+    border: 2px solid black;
+    outline: none;
+    padding: 5px;
+    border-radius: 10px;
+    width: 300px;
+    height: 40px;
+}
+
 .board-profile {
     height: 50px;
 }

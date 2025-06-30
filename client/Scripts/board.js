@@ -16,6 +16,7 @@ function toggleIconDropdown() {
         iconDropdown.style.display = "block";
     }
 }
+
 function toggleNotificationDropdown() {
     const iconDropdown = document.getElementsByClassName("board-profile-icon_dropdown")[0];
     const notificationDropdown = document.getElementsByClassName("board-profile-notification_dropdown")[0];
@@ -28,5 +29,24 @@ function toggleNotificationDropdown() {
         notificationDropdown.style.display = "none";
     } else {
         notificationDropdown.style.display = "block";
+    }
+}
+
+function toggleCreateDropdown() {
+    const iconDropdown = document.getElementsByClassName("board-profile-icon_dropdown")[0];
+    const notificationDropdown = document.getElementsByClassName("board-profile-notification_dropdown")[0];
+    const createDropdown = document.getElementsByClassName("create-section")[0];
+
+    if (notificationDropdown.style.display === "block") {
+        notificationDropdown.style.display = "none";
+    }
+    if (iconDropdown.style.display === "block") {
+        iconDropdown.style.display = "none";
+    }
+
+    if (createDropdown.style.display === "grid") {
+        createDropdown.style.display = "none";
+    } else {
+        createDropdown.style.display = "grid";
     }
 }
