@@ -1,0 +1,63 @@
+﻿@model client.Models.Form
+
+@using (Html.BeginForm("SignUp", "Account", FormMethod.Post, new { @class = "form_registration" }))
+{
+    <h2 class="form_registration_header">Sign Up</h2>
+    <div class="form_registration_name">
+        @Html.LabelFor(formModel => formModel.SignUp.Name, new { @class = "form_registration_label" })
+        <div class="form_registration_input">
+            @Html.TextBoxFor(formModel => formModel.SignUp.Name, new { autocomplete = "off" })
+        </div>
+        <p>@Html.ValidationMessageFor(formModel => formModel.SignUp.Name)</p>
+    </div>
+    <div class="form_registration_email">
+        @Html.LabelFor(formModel => formModel.SignUp.Email, new { @class = "form_registration_label" })
+        <div class="form_registration_input">
+            @Html.TextBoxFor(formModel => formModel.SignUp.Email, new { autocomplete = "off", type = "email" })
+        </div>
+        <p>@Html.ValidationMessageFor(formModel => formModel.SignUp.Email)</p>
+    </div>
+    <div class="form_registration_password">
+        @Html.LabelFor(formModel => formModel.SignUp.Password, new { @class = "form_registration_label" })
+        <div class="form_registration_input">
+            @Html.PasswordFor(formModel => formModel.SignUp.Password, new { id = "registration_password_input" })
+            <i class="fa-solid fa-eye" id="form_registration_password_show" onclick="showPassword('registration')"></i>
+            <i class="fa-solid fa-eye-slash" id="form_registration_password_hide" onclick="hidePassword('registration')"></i>
+        </div>
+        <p>@Html.ValidationMessageFor(formModel => formModel.SignUp.Password)</p>
+    </div>
+    <div class="form_registration_btn">
+        @Html.AntiForgeryToken()
+        <input type="submit" value="Submit" class="button" />
+    </div>
+    <div class="form_registration_other_actions">
+        <p>@Html.ActionLink("Have an account? LogIn", "SignIn", "Account", null, new { @class = "login_here" }) </p>
+    </div>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var $form = $('.form_registration');
+            var $submit = $form.find('input[type="submit"]');
+            var $loader = $('.page_loader');
+
+            // Initially disable the submit button
+            $submit.prop('disabled', true);
+
+            // Watch form changes and enable/disable submit
+            $form.on('input change', function () {
+                if ($form.valid()) {
+                    $submit.prop('disabled', false);
+                } else {
+                    $submit.prop('disabled', true);
+                }
+            });
+
+            // Show loader on submit
+            $form.on('submit', function () {
+                if ($form.valid()) {
+                    $loader.show(); // Show the loader
+                }
+            });
+        });
+    </script>
+}
