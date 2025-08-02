@@ -250,8 +250,8 @@
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Account\SignIn.cshtml" />
     <Content Include="Views\Home\TaskBoard.cshtml" />
-    <Content Include="Views\Account\_Login.cshtml" />
-    <Content Include="Views\Account\_SignUp.cshtml" />
+    <Content Include="Views\Shared\_Loader.cshtml" />
+    <Content Include="Views\Shared\_ToastNotification.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
