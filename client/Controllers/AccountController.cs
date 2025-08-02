@@ -76,6 +76,11 @@ namespace client.Controllers
                 response = await _dataAccess.CheckCredential(formModel.SignIn);
                 string sessionToken = FilterResponse<string>.GetData(response);
 
+                if (String.IsNullOrEmpty(sessionToken))
+                {
+                    throw new Exception("Error occurred while fetching token!");
+                }
+
                 var cookie = new HttpCookie("sessionToken", sessionToken)
                 {
                     HttpOnly = true,
@@ -104,7 +109,7 @@ namespace client.Controllers
                         Message = ex.Message
                     }
                 });
-            }            
+            }
         }
 
         [HttpPost]
